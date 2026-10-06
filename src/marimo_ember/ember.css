@@ -1,0 +1,262 @@
+/*
+ * Warm dark theme for marimo ("ember").
+ * Use via [tool.marimo.display] custom_css in pyproject.toml (see `marimo-ember install`).
+ * marimo reads pyproject config once at startup: restart `marimo edit` after changing that config.
+ * Edits to this file show up on a browser reload.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+:root,
+.dark,
+.dark-theme {
+  /* Surfaces: warm charcoal, stepping lighter as things come forward. */
+  --ember-bg: #171310;
+  --ember-surface: #201b17; /* cells, cards */
+  --ember-raised: #2a231e; /* popovers, menus, hover */
+  --ember-sunken: #120f0c; /* inputs, code wells */
+  --ember-line: #3a3029;
+  --ember-line-strong: #574a3f;
+
+  /* Ink */
+  --ember-text: #f3e9dc;
+  --ember-text-2: #c9b9a6;
+  --ember-text-3: #8f8070;
+
+  /* Vibrant accents */
+  --ember-orange: #ff7a2f;
+  --ember-amber: #ffb547;
+  --ember-teal: #2fd3b0;
+  --ember-pink: #ff5c9d;
+  --ember-violet: #a98bff;
+
+  --ember-radius: 14px;
+
+  /* marimo / shadcn semantic tokens */
+  --background: var(--ember-bg);
+  --foreground: var(--ember-text);
+  --card: var(--ember-surface);
+  --card-foreground: var(--ember-text);
+  --popover: var(--ember-raised);
+  --popover-foreground: var(--ember-text);
+  --muted: var(--ember-sunken);
+  --muted-foreground: var(--ember-text-3);
+  --border: var(--ember-line);
+  --input: var(--ember-line-strong);
+  --primary: var(--ember-orange);
+  --primary-foreground: #1a0f08;
+  --secondary: var(--ember-raised);
+  --secondary-foreground: var(--ember-text);
+  --accent: #3b2618;
+  --accent-foreground: var(--ember-amber);
+  --link: var(--ember-teal);
+  --link-visited: var(--ember-violet);
+  --ring: var(--ember-orange);
+  --base-shadow: #00000066;
+  --base-shadow-darker: #000000aa;
+  --cm-background: var(--ember-sunken);
+  --cm-comment: #7d6e60;
+
+  /* Radix gray scale (used for cell borders, sidebars, etc.) -> warm sand */
+  --gray-1: #171310;
+  --gray-2: #1d1814;
+  --gray-3: #241e19;
+  --gray-4: #2c241e;
+  --gray-5: #332a23;
+  --gray-6: #3d332b;
+  --gray-7: #4b3f35;
+  --gray-8: #645446;
+  --gray-9: #736252;
+  --gray-10: #81705f;
+  --gray-11: #bba893;
+  --gray-12: #f3e9dc;
+  --slate-1: var(--gray-1);
+  --slate-2: var(--gray-2);
+  --slate-3: var(--gray-3);
+  --slate-4: var(--gray-4);
+  --slate-5: var(--gray-5);
+  --slate-6: var(--gray-6);
+  --slate-7: var(--gray-7);
+  --slate-8: var(--gray-8);
+  --slate-9: var(--gray-9);
+  --slate-10: var(--gray-10);
+  --slate-11: var(--gray-11);
+  --slate-12: var(--gray-12);
+
+  /* Typography */
+  --marimo-text-font: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --marimo-heading-font: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --marimo-monospace-font: "JetBrains Mono", ui-monospace, monospace;
+  --marimo-code-editor-font-size: 0.86rem;
+
+  /* Spacing between cells */
+  --ember-cell-gap: 1.6rem;
+  --notebook-cell-gap: var(--ember-cell-gap);
+
+  color-scheme: dark;
+}
+
+body {
+  background:
+    radial-gradient(1200px 600px at 85% -10%, #ff7a2f14, transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, #2fd3b00d, transparent 60%),
+    var(--ember-bg);
+  background-attachment: fixed;
+  color: var(--ember-text);
+  font-feature-settings: "cv11", "ss01", "tnum";
+}
+
+/* ---- Cells ------------------------------------------------------------ */
+
+.marimo-cell {
+  background: var(--ember-surface);
+  border: 1px solid var(--ember-line);
+  border-radius: var(--ember-radius);
+  box-shadow: 0 1px 0 #ffffff08 inset, 0 8px 24px -12px #00000080;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.marimo-cell:hover {
+  border-color: var(--ember-line-strong);
+}
+
+.marimo-cell:focus-within {
+  border-color: #ff7a2f88;
+  box-shadow: 0 0 0 3px #ff7a2f1f, 0 8px 24px -12px #00000080;
+}
+
+/* Output area breathing room. !important beats marimo's own rule, which zeroes the
+   padding when a cell's only output is a table and lets the table touch the cell edge. */
+.marimo-cell .output-area {
+  --marimo-table-edge-padding: 0.75rem;
+  padding: 1.25rem 1.5rem !important;
+}
+
+/* App view (`marimo run`): marimo sets the cell gap to 0 and spaces outputs with
+   1rem margins instead. Use the padding above for the inside, and margins for the gap. */
+.marimo-cell.published {
+  margin-block: calc(var(--ember-cell-gap) / 2);
+}
+.marimo-cell.published .output-area .output {
+  margin-block: 0;
+}
+
+/* Markdown: the first and last blocks shouldn't add extra space at the cell edges */
+.marimo-cell .output-area .markdown > :first-child {
+  margin-top: 0;
+}
+.marimo-cell .output-area .markdown > :last-child {
+  margin-bottom: 0;
+}
+
+/* Tables sit inside the padding as their own rounded panel */
+.marimo-cell .output-area marimo-table::part(table-wrapper) {
+  border: 1px solid var(--ember-line) !important;
+  border-radius: 10px !important;
+}
+
+/* Code editor well. Its corners must match the cell's (minus the 1px border), or its
+   dark background pokes out past the cell's rounded corners. */
+.marimo-cell .cm-editor,
+.marimo-cell .cm {
+  background: var(--ember-sunken);
+  border-radius: calc(var(--ember-radius) - 1px) !important;
+}
+.marimo-cell.interactive > :first-child {
+  border-top-left-radius: calc(var(--ember-radius) - 1px);
+  border-top-right-radius: calc(var(--ember-radius) - 1px);
+}
+.marimo-cell.interactive > :last-child {
+  border-bottom-left-radius: calc(var(--ember-radius) - 1px);
+  border-bottom-right-radius: calc(var(--ember-radius) - 1px);
+}
+.cm-gutters {
+  background: transparent !important;
+  border-right: none !important;
+  color: var(--ember-text-3) !important;
+}
+.cm-activeLine,
+.cm-activeLineGutter {
+  background: #ff7a2f0d !important;
+}
+.cm-cursor {
+  border-left-color: var(--ember-orange) !important;
+}
+.cm-selectionBackground,
+.cm-focused .cm-selectionBackground {
+  background: #ff7a2f33 !important;
+}
+
+/* ---- Markdown ---------------------------------------------------------- */
+
+.markdown {
+  line-height: 1.65;
+  color: var(--ember-text-2);
+}
+.markdown h1,
+.markdown h2,
+.markdown h3 {
+  color: var(--ember-text);
+  letter-spacing: -0.02em;
+  font-weight: 650;
+}
+.markdown h1 {
+  font-size: 2.1rem;
+  margin-bottom: 0.4rem;
+  background: linear-gradient(90deg, var(--ember-amber), var(--ember-orange) 45%, var(--ember-pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.markdown h2 {
+  font-size: 1.35rem;
+  margin-top: 0.4rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--ember-line);
+}
+.markdown code {
+  font-family: var(--marimo-monospace-font);
+  font-size: 0.85em;
+  color: var(--ember-amber);
+  background: #ffb5471a;
+  border: 1px solid #ffb54733;
+  border-radius: 6px;
+  padding: 0.1em 0.4em;
+}
+.markdown a {
+  color: var(--ember-teal);
+  text-underline-offset: 3px;
+}
+
+/* ---- Inputs & tables --------------------------------------------------- */
+
+input,
+select,
+textarea,
+button[role="combobox"] {
+  border-radius: 10px !important;
+}
+
+[role="listbox"],
+[role="menu"],
+[role="dialog"] {
+  border-radius: 12px;
+  border-color: var(--ember-line-strong);
+}
+
+table thead th {
+  color: var(--ember-text-2);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+}
+table tbody tr:hover td {
+  background: #ff7a2f0a;
+}
+
+/* ---- Scrollbars -------------------------------------------------------- */
+
+* {
+  scrollbar-color: var(--ember-line-strong) transparent;
+}
